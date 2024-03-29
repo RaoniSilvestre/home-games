@@ -4,12 +4,12 @@ import GridItem from "@/components/gridItem";
 import { useState, useEffect } from "react";
 
 export default function Page() {
-	const [matriz, setMatriz] = useState([
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-	]);
-	const [turn, setTurn] = useState(1);
+  const [matriz, setMatriz] = useState([
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+  ]);
+  const [turn, setTurn] = useState(1);
 
   function winner(matriz: number[][], player: number) {
     for (let i = 0; i < 3; i++) {
@@ -22,9 +22,11 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (winner(matriz, 1)) {alert("Player 1 ganhou!"); resetGame()};
-    if (winner(matriz, 2)) {alert("Player 2 ganhou!"); resetGame()};
+    if (winner(matriz, 1)) { alert("Player 1 ganhou!"); resetGame() };
+    if (winner(matriz, 2)) { alert("Player 2 ganhou!"); resetGame() };
   }, [matriz]);
+
+
 
   const handleClick = (location: [number, number]) => {
     const [i, j] = location;
@@ -44,23 +46,23 @@ export default function Page() {
     setTurn(1);
   };
 
-	return (
+  return (
     <>
-		<div className="flex justify-center items-center h-screen">
-			<div className="grid grid-cols-3 gap-4">
-				{matriz.map((row, i) =>
-					row.map((state, j) => (
-						<GridItem
-              handleClick={handleClick}
-							key={`${i}-${j}`}
-							location={[i, j]}
-							state={matriz[i][j]}
-						/>
-					))
-				)}
-			</div>
-		</div>
-    <button type="button" className={"bg-purple-100"} onClick={resetGame}>resetar!</button>
+      <div className="flex justify-center items-center h-screen">
+        <div className="grid grid-cols-3 gap-4">
+          {matriz.map((row, i) =>
+            row.map((state, j) => (
+              <GridItem
+                handleClick={handleClick}
+                key={`${i}-${j}`}
+                location={[i, j]}
+                state={matriz[i][j]}
+              />
+            ))
+          )}
+        </div>
+      </div>
+      <button type="button" className={"bg-purple-100"} onClick={resetGame}>resetar!</button>
     </>
-	);
+  );
 }
