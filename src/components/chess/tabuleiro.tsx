@@ -14,15 +14,23 @@ export default function TabuleiroComponent() {
 
   }
   console.log(tabuleiro)
+  const pecinha = tabuleiro.obterPeça([3, 2])
+  pecinha?.mover(tabuleiro, [2, 2])
+  console.log(tabuleiro)
+  console.log(tabuleiro.obterPeça([2, 2]))
+  const peaopreto = tabuleiro.obterPeça([1, 1])
+  peaopreto?.mover(tabuleiro, [2, 2])
+  tabuleiro.obterPeça([3, 3])?.mover(tabuleiro, [2, 2])
+  tabuleiro.atualizarPeça(tabuleiro.obterPeça([2, 2]))
   for (let i = 0; i < tamanho[0]; i++) {
     for (let j = 0; j < tamanho[1]; j++) {
       divs.push(<CasaDaPeça key={`${i}-${j}`} peça={tabuleiro.obterPeça([i, j])} cor={i + j} />);
-
     }
   }
+
   return (
     <>
-      <div className="bg-gray-200 grid grid-cols-5 w-[500px] h-[500px] ">
+      <div className="bg-gray-200 grid grid-cols-5 grid-rows-5 w-[500px] h-[500px] ">
         {divs}
       </div>
     </>

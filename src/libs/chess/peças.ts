@@ -11,9 +11,15 @@ export class Tabuleiro {
     this.celulas = Array.from({ length: posição[0] }, () => Array(posição[1]).fill(null))
   }
 
-  atualizarPeça(peça: PeçaDeXadrez): void {
-    const [x, y] = peça.posição;
-    this.celulas[x][y] = peça;
+  atualizarPeça(peça: MPeça): void {
+    if (peça === null)
+      console.log("Não tem peça pra mover nessa casa")
+    else {
+      const [x, y] = peça.posição;
+      this.celulas[x][y] = peça;
+
+    }
+
   }
 
   removerPeça(posição: Posição): void {
@@ -48,17 +54,19 @@ export abstract class PeçaDeXadrez {
 export class Peão extends PeçaDeXadrez {
 
   atualizarPosição(tabuleiro: Tabuleiro, posição: Posição): void {
+    tabuleiro.removerPeça(this.posição)
     this.posição = posição;
+
     tabuleiro.atualizarPeça(this);
   }
 
   mover(tabuleiro: Tabuleiro, posição: Posição): boolean {
     if (this.cor === "branco") {
       const posDesejada = tabuleiro.obterPeça(posição)
-      if (posDesejada === null && posição[0] === this.posição[0] + 1 && posição[1] === this.posição[1]) {
+      if (posDesejada === null && posição[0] === this.posição[0] - 1 && posição[1] === this.posição[1]) {
         this.atualizarPosição(tabuleiro, posição);
         return true;
-      } else if (posDesejada !== null && posDesejada.posição[0] === this.posição[0] + 1 &&
+      } else if (posDesejada !== null && posDesejada.posição[0] === this.posição[0] - 1 &&
         (posDesejada.posição[1] === this.posição[1] + 1 || posDesejada.posição[1] === this.posição[1] - 1)
       ) {
         this.atualizarPosição(tabuleiro, posição);
@@ -70,11 +78,11 @@ export class Peão extends PeçaDeXadrez {
 
     } else if (this.cor === "preto") {
       const posDesejada = tabuleiro.obterPeça(posição);
-      if (posDesejada === null && posição[0] === this.posição[0] - 1 && posição[1] === this.posição[1]) {
+      if (posDesejada === null && posição[0] === this.posição[0] + 1 && posição[1] === this.posição[1]) {
         this.atualizarPosição(tabuleiro, posição);
         return true;
       } else if (posDesejada !== null && posDesejada.cor === "branco" &&
-        (posDesejada.posição[0] === this.posição[0] - 1) &&
+        (posDesejada.posição[0] === this.posição[0] + 1) &&
         (posDesejada.posição[1] === this.posição[1] + 1 || posDesejada.posição[1] === this.posição[1] - 1)
       ) {
         this.atualizarPosição(tabuleiro, posição);

@@ -16,8 +16,8 @@ export default function CasaDaPeça({ peça, cor }: PropsCasa) {
       <Image
         src={peça.cor === "preto" ? peao_preto : peao_branco}
         alt="peão preto"
-        width={100}
-        height={100}
+        width={tamanhoDasCoisa}
+        height={tamanhoDasCoisa}
       />
 
     </div>
