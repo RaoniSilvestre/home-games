@@ -1,39 +1,5 @@
-
-export type Cor = "branco" | "preto";
-export type MPeça = PeçaDeXadrez | null;
-export type Posição = [number, number];
-
-
-export class Tabuleiro {
-  celulas: (MPeça)[][];
-
-  constructor(posição: Posição) {
-    this.celulas = Array.from({ length: posição[0] }, () => Array(posição[1]).fill(null))
-  }
-
-  atualizarPeça(peça: MPeça): void {
-    if (peça === null)
-      console.log("Não tem peça pra mover nessa casa")
-    else {
-      const [x, y] = peça.posição;
-      this.celulas[x][y] = peça;
-
-    }
-
-  }
-
-  removerPeça(posição: Posição): void {
-    const [x, y] = posição;
-    this.celulas[x][y] = null;
-  }
-
-  obterPeça(posição: Posição): MPeça {
-    const [x, y] = posição;
-    return this.celulas[x][y];
-  }
-}
-
-
+import { Posição, Cor } from "./tipos";
+import { Tabuleiro } from "./tabuleiro";
 
 export abstract class PeçaDeXadrez {
 
@@ -104,11 +70,46 @@ export class Torre extends PeçaDeXadrez {
     this.posição = posição;
     tabuleiro.atualizarPeça(this);
   }
-  ᵃ
-  
-  ^ a
-mover(tabuleiro: Tabuleiro, posição: Posição): boolean {
 
-}
+  mover(tabuleiro: Tabuleiro, posição: Posição): boolean {
+    let thisX = this.posição[0];
+    let thisY = this.posição[1];
+
+    let novaPosiçãoX = posição[0];
+    let novaPosiçãoY = posição[1];
+
+    let absolutX = Math.abs(thisX - novaPosiçãoX);
+    let absolutY = Math.abs(thisY - novaPosiçãoY);
+
+    // Se estão na mesma linha
+    if (thisX === novaPosiçãoX) {
+      //Verifique se tem alguem na mesma coluna :: Precisa-se fazer direito!!!
+      while (absolutY !== 0) {
+        if (tabuleiro.obterPeça([thisX, thisY]) !== null) {
+          console.log("movimento inválido")
+          return false;
+        }
+        thisY--;
+        absolutY = Math.abs(thisY - novaPosiçãoY)
+      }
+      this.atualizarPosição(tabuleiro, posição);
+      return true;
+    } else if (thisY === novaPosiçãoY) {
+      while (absolutX !== 0) {
+        if (tabuleiro.obterPeça([thisX, thisY]) !== null) {
+
+          console.log("movimento inválido")
+          return false;
+        }
+        thisX--;
+        absolutY = Math.abs(thisX - novaPosiçãoX);
+      }
+      this.atualizarPosição(tabuleiro, posição);
+      return true;
+    } else {
+      console.log("movimento inválido")
+      return false
+    }
+  }
 }
 

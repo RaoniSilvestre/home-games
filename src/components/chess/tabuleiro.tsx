@@ -1,27 +1,22 @@
-import { Peão, Posição, Tabuleiro } from "@/libs/chess/peças";
+import { Peão, Torre } from "@/libs/chess/peças";
+import { Posição } from "@/libs/chess/tipos";
+import Tabuleiro from "@/libs/chess/tabuleiro";
 import CasaDaPeça from "@/components/chess/casa"
+
 export default function TabuleiroComponent() {
   const tamanho: Posição = [5, 5];
   const tabuleiro = new Tabuleiro(tamanho)
-  const divs = []
-  for (let i = 0; i < tamanho[0]; i++) {
-    const peao = new Peão("preto", [1, i])
-    tabuleiro.atualizarPeça(peao)
-  }
-  for (let i = 0; i < tamanho[0]; i++) {
-    const peao = new Peão("branco", [3, i])
-    tabuleiro.atualizarPeça(peao)
+  const divs = [];
 
-  }
+  let torrezinha = new Torre("branco", [2, 2])
+  tabuleiro.atualizarPeça(torrezinha);
+  torrezinha.atualizarPosição(tabuleiro, [1, 2])
+
   console.log(tabuleiro)
-  const pecinha = tabuleiro.obterPeça([3, 2])
-  pecinha?.mover(tabuleiro, [2, 2])
-  console.log(tabuleiro)
-  console.log(tabuleiro.obterPeça([2, 2]))
-  const peaopreto = tabuleiro.obterPeça([1, 1])
-  peaopreto?.mover(tabuleiro, [2, 2])
-  tabuleiro.obterPeça([3, 3])?.mover(tabuleiro, [2, 2])
-  tabuleiro.atualizarPeça(tabuleiro.obterPeça([2, 2]))
+
+  let peaozinho = new Peão("branco", [2, 2]);
+  tabuleiro.atualizarPeça(peaozinho);
+  torrezinha.atualizarPosição(tabuleiro, [3, 2])
 
   for (let i = 0; i < tamanho[0]; i++) {
     for (let j = 0; j < tamanho[1]; j++) {
@@ -36,4 +31,17 @@ export default function TabuleiroComponent() {
       </div>
     </>
   )
+}
+
+function inserirPeões(tabuleiro: Tabuleiro, tamanho: Posição) {
+
+  for (let i = 0; i < tamanho[0]; i++) {
+    const peao = new Peão("preto", [1, i])
+    tabuleiro.atualizarPeça(peao)
+  }
+  for (let i = 0; i < tamanho[0]; i++) {
+    const peao = new Peão("branco", [tamanho[0] - 2, i])
+    tabuleiro.atualizarPeça(peao)
+
+  }
 }
