@@ -56,7 +56,6 @@ export class Peão extends PeçaDeXadrez {
   atualizarPosição(tabuleiro: Tabuleiro, posição: Posição): void {
     tabuleiro.removerPeça(this.posição)
     this.posição = posição;
-
     tabuleiro.atualizarPeça(this);
   }
 
@@ -100,8 +99,16 @@ export class Peão extends PeçaDeXadrez {
 
 export class Torre extends PeçaDeXadrez {
 
-  mover(): void {
-
+  atualizarPosição(tabuleiro: Tabuleiro, posição: Posição): void {
+    tabuleiro.removerPeça(this.posição)
+    this.posição = posição;
+    tabuleiro.atualizarPeça(this);
   }
+  ᵃ
+  
+  ^ a
+mover(tabuleiro: Tabuleiro, posição: Posição): boolean {
+
+}
 }
 

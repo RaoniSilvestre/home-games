@@ -22,6 +22,7 @@ export default function TabuleiroComponent() {
   peaopreto?.mover(tabuleiro, [2, 2])
   tabuleiro.obterPeça([3, 3])?.mover(tabuleiro, [2, 2])
   tabuleiro.atualizarPeça(tabuleiro.obterPeça([2, 2]))
+
   for (let i = 0; i < tamanho[0]; i++) {
     for (let j = 0; j < tamanho[1]; j++) {
       divs.push(<CasaDaPeça key={`${i}-${j}`} peça={tabuleiro.obterPeça([i, j])} cor={i + j} />);
