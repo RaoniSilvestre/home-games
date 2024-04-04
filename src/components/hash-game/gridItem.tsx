@@ -1,6 +1,6 @@
 import Image from "next/image";
-import x from "@/assets/x.png";
-import o from "@/assets/o.png";
+import x from "@/assets/hash-game/x.png";
+import o from "@/assets/hash-game/o.png";
 
 interface GridItemProps {
   state: number;

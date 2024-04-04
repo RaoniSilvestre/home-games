@@ -7,10 +7,11 @@ import Peão from "@/libs/chess/peças/peão";
 import Bispo from "@/libs/chess/peças/bispo";
 
 export default function TabuleiroComponent() {
-  const tamanho: Posição = { x: 5, y: 5 };
+  const tamanho: Posição = { x: 8, y: 8 };
   const tabuleiro = new Tabuleiro(tamanho)
   const divs = [];
 
+  inserirPeões(tabuleiro)
   let torrezinha = new Torre("preto", { x: 2, y: 2 }, tabuleiro)
 
   let peaozin = new Peão("branco", { x: 3, y: 3 }, tabuleiro)
@@ -21,6 +22,8 @@ export default function TabuleiroComponent() {
 
   bispin.mover(tabuleiro, torrezinha.getPosição())
 
+
+  bispin.mover(tabuleiro, { x: 1, y: 2 })
   for (let i = 0; i < tamanho.x; i++) {
     for (let j = 0; j < tamanho.y; j++) {
       divs.push(<CasaDaPeça key={`${i}-${j}`} peça={tabuleiro.getCelula({ x: i, y: j })} cor={i + j} />);
@@ -28,22 +31,23 @@ export default function TabuleiroComponent() {
   }
 
   return (
-    <>
-      <div className="bg-gray-200 grid grid-cols-5 grid-rows-5 w-[500px] h-[500px] ">
+    <div className={`flex justify-center items-center h-screen`}>
+      <div className={`bg-gray-100 grid grid-rows-${tamanho.x} grid-cols-${tamanho.y} box-border m-0 p-0 gap-0 w-max`} >
         {divs}
-      </div>
-    </>
+      </div >
+    </div>
   )
 }
 
-function inserirPeões(tabuleiro: Tabuleiro, tamanho: Posição) {
+function inserirPeões(tabuleiro: Tabuleiro) {
+  let { x, y } = tabuleiro.getMaxPos()
 
-  for (let i = 0; i < tamanho.x; i++) {
+  for (let i = 0; i < x; i++) {
     const peao = new Peão("preto", { x: 1, y: i }, tabuleiro)
     tabuleiro.setCelula(peao, peao.getPosição())
   }
-  for (let i = 0; i < tamanho.y; i++) {
-    const peao = new Peão("branco", { x: tamanho.x - 2, y: i }, tabuleiro)
+  for (let i = 0; i < y; i++) {
+    const peao = new Peão("branco", { x: x - 2, y: i }, tabuleiro)
     tabuleiro.setCelula(peao, peao.getPosição())
 
   }

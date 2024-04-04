@@ -17,7 +17,7 @@ interface PropsCasa {
 
 export default function CasaDaPeça({ peça, cor }: PropsCasa) {
   const tamanhoDasCoisa = 100
-  let myclassnamis = `h-[${tamanhoDasCoisa}px] w-[${tamanhoDasCoisa}px]`
+  let myclassnamis = ``
   myclassnamis = myclassnamis + (cor % 2 === 0 ? ' bg-gray-200' : ' bg-gray-300')
 
   if (peça instanceof Peão) {

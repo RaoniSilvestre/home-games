@@ -1,6 +1,6 @@
 "use client";
 
-import GridItem from "@/components/gridItem";
+import GridItem from "@/components/hash-game/gridItem";
 import { useState, useEffect } from "react";
 
 export default function Page() {

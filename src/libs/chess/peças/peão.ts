@@ -1,7 +1,6 @@
 import PeçaDeXadrez from "./peça"
 import Tabuleiro from "../tabuleiro"
 import { Posição } from "../tipos"
-import { warn } from "console"
 
 // Peão!!
 export default class Peão extends PeçaDeXadrez {
@@ -22,13 +21,11 @@ export default class Peão extends PeçaDeXadrez {
     const frontLeftCell = tabuleiro.getCelula(frontLeftPosition)
     const frontRightCell = tabuleiro.getCelula(frontRightPosition)
 
-    if (frontLeftCell !== null && frontLeftCell.getCor() === "preto") {
-      newPossibleMoves.add(frontLeftCell.getPosição())
-
-
+    if (frontLeftCell !== null && frontLeftCell?.getCor() === "preto") {
+      newPossibleMoves.add(frontLeftCell?.getPosição())
     }
 
-    if (frontRightCell !== null && frontRightCell.getCor() === "preto") {
+    if (frontRightCell !== null && frontRightCell?.getCor() === "preto") {
       newPossibleMoves.add(frontRightCell.getPosição())
     }
 
@@ -55,12 +52,12 @@ export default class Peão extends PeçaDeXadrez {
     const frontLeftCell = tabuleiro.getCelula(frontLeftPosition)
     const frontRightCell = tabuleiro.getCelula(frontRightPosition)
 
-    if (frontLeftCell !== null && frontLeftCell.getCor() === "branco") {
+    if (frontLeftCell !== null && frontLeftCell?.getCor() === "branco") {
       newPossibleMoves.add(frontLeftCell.getPosição())
     }
     console.log(frontRightCell)
 
-    if (frontRightCell !== null && frontRightCell.getCor() === "branco") {
+    if (frontRightCell !== null && frontRightCell?.getCor() === "branco") {
       newPossibleMoves.add(frontRightCell.getPosição())
     }
 
