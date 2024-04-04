@@ -2,34 +2,40 @@ import { MPeça, Posição } from "./tipos";
 
 
 export default class Tabuleiro {
-  celulas: (MPeça)[][];
-
+  private celulas: (MPeça)[][];
+  private maxPos: Posição;
   constructor(posição: Posição) {
     this.celulas = Array.from({ length: posição[0] }, () => Array(posição[1]).fill(null))
+    this.maxPos = posição;
   }
 
-  atualizarPeça(peça: MPeça): void {
-    if (peça === null)
-      console.log("Não tem peça pra mover nessa casa")
-    else {
-      const [x, y] = peça.posição;
-      this.celulas[x][y] = peça;
-
-    }
-
-  }
-
-  removerPeça(posição: Posição): void {
+  setCelula(peça: MPeça, posição: Posição): boolean {
+    if (!this.verifyPos(posição)) {
+      return false;
+    };
     const [x, y] = posição;
-    this.celulas[x][y] = null;
+    this.celulas[x][y] = peça;
+    return true;
   }
 
-  obterPeça(posição: Posição): MPeça {
+  getCelula(posição: Posição): MPeça {
     const [x, y] = posição;
     return this.celulas[x][y];
   }
-}
 
+  getMaxPos(): Posição {
+    return this.maxPos;
+  }
+
+  verifyPos(pos: Posição): boolean {
+    const [maxX, maxY] = this.getMaxPos();
+    const [x, y] = pos;
+    if (x >= maxX || y >= maxY || y < 0 || x < 0) {
+      return false;
+    }
+    return true;
+  }
+}
 
 
 
