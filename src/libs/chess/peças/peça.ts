@@ -34,17 +34,22 @@ export default abstract class PeçaDeXadrez {
 
   public setPossibleMoves(possibleMoves: Set<Posição>): void {
     this.possibleMoves = possibleMoves;
+
   }
 
   public getPossibleMoves(): Set<Posição> {
     return this.possibleMoves;
   }
 
-  protected atualizarPosição(tabuleiro: Tabuleiro, posição: Posição): void {
-    tabuleiro.setCelula(null, this.getPosição());
-    this.setPosição(posição);
-    tabuleiro.setCelula(this, posição);
-  }
-
   public abstract mover(tabuleiro: Tabuleiro, posição: Posição): void;
+
+
+  protected verifyEquality(conjunto: Set<Posição>, posição: Posição): boolean {
+    for (const element of conjunto) {
+      if (element.x === posição.x && element.y === posição.y) {
+        return true
+      }
+    }
+    return false;
+  }
 }

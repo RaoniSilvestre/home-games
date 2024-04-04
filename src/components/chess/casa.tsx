@@ -1,4 +1,6 @@
-import { MPeça, Peão, Torre } from "@/libs/chess/peças"
+import Peão from "@/libs/chess/peças/peão"
+import Torre from "@/libs/chess/peças/torre"
+import { MPeça } from "@/libs/chess/tipos"
 import Image from "next/image"
 
 import peao_preto from "@/assets/chess/peao_preto.png"
@@ -19,7 +21,7 @@ export default function CasaDaPeça({ peça, cor }: PropsCasa) {
   if (peça instanceof Peão) {
     return <div className={myclassnamis}>
       <Image
-        src={peça.cor === "preto" ? peao_preto : peao_branco}
+        src={peça.getCor() === "preto" ? peao_preto : peao_branco}
         alt="peão preto"
         width={tamanhoDasCoisa}
         height={tamanhoDasCoisa}

@@ -5,7 +5,7 @@ export default class Tabuleiro {
   private celulas: (MPeça)[][];
   private maxPos: Posição;
   constructor(posição: Posição) {
-    this.celulas = Array.from({ length: posição.getX() }, () => Array(posição.getY()).fill(null))
+    this.celulas = Array.from({ length: posição.x }, () => Array(posição.y).fill(null))
     this.maxPos = posição;
   }
 
@@ -13,12 +13,12 @@ export default class Tabuleiro {
     if (!this.verifyPos(posição)) {
       return false;
     };
-    this.celulas[posição.getX()][posição.getY()] = peça;
+    this.celulas[posição.x][posição.y] = peça;
     return true;
   }
 
   getCelula(posição: Posição): MPeça {
-    return this.celulas[posição.getX()][posição.getY()];
+    return this.celulas[posição.x][posição.y];
   }
 
   getMaxPos(): Posição {
@@ -28,7 +28,7 @@ export default class Tabuleiro {
   verifyPos(pos: Posição): boolean {
     const maxPos = this.getMaxPos();
 
-    if (pos.getX() >= maxPos.getX() || pos.getY() >= maxPos.getY() || pos.getY() < 0 || pos.getX() < 0) {
+    if (pos.x >= maxPos.x || pos.y >= maxPos.y || pos.y < 0 || pos.x < 0) {
       return false;
     }
     return true;

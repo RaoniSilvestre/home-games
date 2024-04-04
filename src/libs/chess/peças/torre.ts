@@ -1,7 +1,9 @@
 import PeçaDeXadrez from "./peça"
 import { Posição } from "../tipos"
 import Tabuleiro from "../tabuleiro"
-export class Torre extends PeçaDeXadrez {
+
+export default class Torre extends PeçaDeXadrez {
+
   private calculateUp(tabuleiro: Tabuleiro, posição: Posição): void {
     if (!tabuleiro.verifyPos(posição)) {
       return
@@ -12,13 +14,14 @@ export class Torre extends PeçaDeXadrez {
 
       possibleMoves.add(posição)
 
-      let novaPosição = new Posição(posição.getX() - 1, posição.getY())
+      let novaPosição: Posição = { x: posição.x - 1, y: posição.y }
 
       this.setPossibleMoves(possibleMoves)
       this.calculateUp(tabuleiro, novaPosição)
     }
 
   }
+
   private calculateLeft(tabuleiro: Tabuleiro, posição: Posição): void {
     if (!tabuleiro.verifyPos(posição)) {
       return
@@ -29,12 +32,14 @@ export class Torre extends PeçaDeXadrez {
 
       possibleMoves.add(posição)
 
-      let novaPosição = new Posição(posição.getX(), posição.getY() - 1)
+      let novaPosição = { x: posição.x, y: posição.y - 1 }
 
       this.setPossibleMoves(possibleMoves)
-      this.calculateUp(tabuleiro, novaPosição)
+      this.calculateLeft(tabuleiro, novaPosição)
     }
   }
+
+
   private calculateRight(tabuleiro: Tabuleiro, posição: Posição): void {
     if (!tabuleiro.verifyPos(posição)) {
       return
@@ -45,11 +50,14 @@ export class Torre extends PeçaDeXadrez {
 
       possibleMoves.add(posição)
 
-      let novaPosição = new Posição(posição.getX(), posição.getY() + 1)
+      let novaPosição = { x: posição.x, y: posição.y + 1 }
       this.setPossibleMoves(possibleMoves)
-      this.calculateUp(tabuleiro, novaPosição)
+      this.calculateRight(tabuleiro, novaPosição)
     }
+
+    return
   }
+
   private calculateDown(tabuleiro: Tabuleiro, posição: Posição): void {
     if (!tabuleiro.verifyPos(posição)) {
       return
@@ -60,34 +68,39 @@ export class Torre extends PeçaDeXadrez {
 
       possibleMoves.add(posição)
 
-      let novaPosição = new Posição(posição.getX() + 1, posição.getY())
+      let novaPosição = { x: posição.x + 1, y: posição.y }
       this.setPossibleMoves(possibleMoves)
-      this.calculateUp(tabuleiro, novaPosição)
+      this.calculateDown(tabuleiro, novaPosição)
     }
-
   }
+
+
   calculatePossibleMoves(tabuleiro: Tabuleiro) {
     this.setPossibleMoves(new Set())
+    let { x, y } = this.getPosição()
 
-    let novaPosiçãoUp = new Posição(this.getPosição().getX() - 1, this.getPosição().getY())
-    let novaPosiçãoLeft = new Posição(this.getPosição().getX(), this.getPosição().getY() - 1)
-    let novaPosiçãoRight = new Posição(this.getPosição().getX(), this.getPosição().getY() + 1)
-    let novaPosiçãoDown = new Posição(this.getPosição().getX() + 1, this.getPosição().getY())
+    // Um pra cima
+    let novaPosiçãoUp = { x: x - 1, y: y }
+
+    //Um pra esquerda
+    let novaPosiçãoLeft = { x: x, y: y - 1 }
+
+    // Um pra direita
+    let novaPosiçãoRight = { x: x, y: y + 1 }
+
+    // Um pra baixo
+    let novaPosiçãoDown = { x: x + 1, y: y }
 
     this.calculateUp(tabuleiro, novaPosiçãoUp)
     this.calculateLeft(tabuleiro, novaPosiçãoLeft)
     this.calculateRight(tabuleiro, novaPosiçãoRight)
     this.calculateDown(tabuleiro, novaPosiçãoDown)
+
+
+    let novoset = this.getPossibleMoves()
+    novoset.delete(this.getPosição())
   }
 
-  private verifyEquality(conjunto: Set<Posição>, posição: Posição): boolean {
-    for (const elemento of conjunto) {
-      if (posição.equals(elemento)) {
-        return true;
-      }
-    }
-    return false;
-  }
 
   mover(tabuleiro: Tabuleiro, posiçãoNova: Posição): boolean {
     if (!tabuleiro.verifyPos(posiçãoNova)) {
@@ -97,6 +110,7 @@ export class Torre extends PeçaDeXadrez {
 
     this.calculatePossibleMoves(tabuleiro)
 
+    console.log(this.verifyEquality(this.getPossibleMoves(), posiçãoNova))
     if (this.verifyEquality(this.getPossibleMoves(), posiçãoNova)) {
       tabuleiro.setCelula(null, this.getPosição());
 
