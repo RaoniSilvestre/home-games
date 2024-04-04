@@ -21,8 +21,6 @@ export default function TabuleiroComponent() {
 
   bispin.mover(tabuleiro, torrezinha.getPosição())
 
-  console.log(tabuleiro)
-
   for (let i = 0; i < tamanho.x; i++) {
     for (let j = 0; j < tamanho.y; j++) {
       divs.push(<CasaDaPeça key={`${i}-${j}`} peça={tabuleiro.getCelula({ x: i, y: j })} cor={i + j} />);
