@@ -7,16 +7,16 @@ export abstract class PeçaDeXadrez {
 
   private posição: Posição;
   private cor: Cor;
-  private possibleMoves: (Posição)[]
+  private possibleMoves: Set<Posição>;
 
-  constructor(cor: Cor, posição: Posição) {
+  constructor(cor: Cor, posição: Posição, tabuleiro: Tabuleiro) {
     this.cor = cor;
     this.posição = posição;
-    this.possibleMoves = []
-    this.calculatePossibleMoves();
+    this.possibleMoves = new Set();
+    this.calculatePossibleMoves(tabuleiro)
   }
 
-  protected abstract calculatePossibleMoves(): void
+  protected abstract calculatePossibleMoves(tabuleiro: Tabuleiro): void
 
   public getPosição(): Posição {
     return this.posição;
@@ -34,11 +34,11 @@ export abstract class PeçaDeXadrez {
     this.cor = corzinha;
   }
 
-  public setPossibleMoves(possibleMoves: (Posição)[]): void {
+  public setPossibleMoves(possibleMoves: Set<Posição>): void {
     this.possibleMoves = possibleMoves;
   }
 
-  public getPossibleMoves(): (Posição)[] {
+  public getPossibleMoves(): Set<Posição> {
     return this.possibleMoves;
   }
 
@@ -54,59 +54,73 @@ export abstract class PeçaDeXadrez {
 
 // Peão!!
 export class Peão extends PeçaDeXadrez {
-  private calculateWhitePawnMoves(peça: Peão, tabuleiro: Tabuleiro): Posição[] {
-    const [x, y] = peça.getPosição()
+  private calculateWhitePawnMoves(peça: Peão, tabuleiro: Tabuleiro): Set<Posição> {
+    const pos = peça.getPosição()
 
-    let newPossibleMoves: Posição[] = []
-
-    const frontCell = tabuleiro.getCelula([x - 1, y])
+    let newPossibleMoves: Set<Posição> = new Set()
+    let frontPosition = new Posição(pos.getX() - 1, pos.getY())
+    const frontCell = tabuleiro.getCelula(frontPosition)
     if (frontCell === null) {
-      newPossibleMoves.push([x - 1, y])
+      newPossibleMoves.add(frontPosition)
     }
 
-    const frontLeftCell = tabuleiro.getCelula([x - 1, y - 1])
-    const frontRightCell = tabuleiro.getCelula([x - 1, y + 1])
+    const frontLeftPosition = new Posição(pos.getX() - 1, pos.getY() - 1);
+    const frontRightPosition = new Posição(pos.getX() - 1, pos.getY() + 1);
+    const frontLeftCell = tabuleiro.getCelula(frontLeftPosition)
+    const frontRightCell = tabuleiro.getCelula(frontRightPosition)
 
     if (frontLeftCell !== null && frontLeftCell.getCor() === "preto") {
-      newPossibleMoves.push(frontLeftCell.getPosição())
+      newPossibleMoves.add(frontLeftCell.getPosição())
     }
 
     if (frontRightCell !== null && frontRightCell.getCor() === "preto") {
-      newPossibleMoves.push(frontRightCell.getPosição())
+      newPossibleMoves.add(frontRightCell.getPosição())
     }
 
     return newPossibleMoves;
   }
 
-  private calculateBlackPawnMoves(peça: PeçaDeXadrez, tabuleiro: Tabuleiro) {
-    const [x, y] = peça.getPosição()
+  private calculateBlackPawnMoves(peça: Peão, tabuleiro: Tabuleiro): Set<Posição> {
+    const pos = peça.getPosição()
 
-    let newPossibleMoves: Posição[] = []
+    let newPossibleMoves: Set<Posição> = new Set()
 
-    const frontCell = tabuleiro.getCelula([x + 1, y])
+    const frontPosition = new Posição(pos.getX() + 1, pos.getY())
+    const frontCell = tabuleiro.getCelula(frontPosition)
     if (frontCell === null) {
-      newPossibleMoves.push([x + 1, y])
+      newPossibleMoves.add(frontPosition)
     }
 
-    const frontLeftCell = tabuleiro.getCelula([x + 1, y - 1])
-    const frontRightCell = tabuleiro.getCelula([x + 1, y + 1])
+
+    const frontLeftPosition = new Posição(pos.getX() + 1, pos.getY() - 1)
+    const frontRightPosition = new Posição(pos.getX() + 1, pos.getY() + 1)
+
+
+    const frontLeftCell = tabuleiro.getCelula(frontLeftPosition)
+    const frontRightCell = tabuleiro.getCelula(frontRightPosition)
 
     if (frontLeftCell !== null && frontLeftCell.getCor() === "preto") {
-      newPossibleMoves.push(frontLeftCell.getPosição())
+      newPossibleMoves.add(frontLeftCell.getPosição())
     }
+    console.log(frontRightCell)
 
     if (frontRightCell !== null && frontRightCell.getCor() === "preto") {
-      newPossibleMoves.push(frontRightCell.getPosição())
+      newPossibleMoves.add(frontRightCell.getPosição())
     }
 
     return newPossibleMoves;
   }
-  private calculatePossibleMoves(tabuleiro: Tabuleiro): void {
+
+
+  calculatePossibleMoves(tabuleiro: Tabuleiro): void {
     const cor = this.getCor();
-    this.setPossibleMoves([]);
-    this.setPossibleMoves(cor === "branco" ? this.calculateWhitePawnMoves(tabuleiro) : this.calculateBlackPawnMoves(tabuleiro))
+    this.setPossibleMoves(new Set());
+    this.setPossibleMoves(cor === "branco" ? this.calculateWhitePawnMoves(this, tabuleiro) :
+      this.calculateBlackPawnMoves(this, tabuleiro))
   }
 
+
+  // Função importante
   mover(tabuleiro: Tabuleiro, posiçãoNova: Posição): boolean {
 
     if (!tabuleiro.verifyPos(posiçãoNova)) {
@@ -114,13 +128,18 @@ export class Peão extends PeçaDeXadrez {
       return false;
     }
 
-
     this.calculatePossibleMoves(tabuleiro);
 
-    if (this.getPossibleMoves().includes(posiçãoNova)) {
-      tabuleiro.setCelula(this, tabuleiro);
+    if (this.getPossibleMoves().has(posiçãoNova)) {
+      tabuleiro.setCelula(null, this.getPosição());
+
+      this.setPosição(posiçãoNova);
+
+      tabuleiro.setCelula(this, posiçãoNova);
       return true;
     }
+    console.error("Erro: Posição inválida!");
+
     return false;
   }
 
@@ -135,48 +154,111 @@ export class Peão extends PeçaDeXadrez {
 
 
 export class Torre extends PeçaDeXadrez {
-
-
-
-  mover(tabuleiro: Tabuleiro, posição: Posição): boolean {
-    let thisX = this.posição[0];
-    let thisY = this.posição[1];
-
-    let novaPosiçãoX = posição[0];
-    let novaPosiçãoY = posição[1];
-
-    let absolutX = Math.abs(thisX - novaPosiçãoX);
-    let absolutY = Math.abs(thisY - novaPosiçãoY);
-
-    // Se estão na mesma linha
-    if (thisX === novaPosiçãoX) {
-      //Verifique se tem alguem na mesma coluna :: Precisa-se fazer direito!!!
-      while (absolutY !== 0) {
-        if (tabuleiro.obterPeça([thisX, thisY]) !== null) {
-          console.log("movimento inválido")
-          return false;
-        }
-        thisY--;
-        absolutY = Math.abs(thisY - novaPosiçãoY)
-      }
-      this.atualizarPosição(tabuleiro, posição);
-      return true;
-    } else if (thisY === novaPosiçãoY) {
-      while (absolutX !== 0) {
-        if (tabuleiro.obterPeça([thisX, thisY]) !== null) {
-
-          console.log("movimento inválido")
-          return false;
-        }
-        thisX--;
-        absolutY = Math.abs(thisX - novaPosiçãoX);
-      }
-      this.atualizarPosição(tabuleiro, posição);
-      return true;
-    } else {
-      console.log("movimento inválido")
-      return false
+  private calculateUp(tabuleiro: Tabuleiro, posição: Posição): void {
+    if (!tabuleiro.verifyPos(posição)) {
+      return
     }
+
+    if (tabuleiro.getCelula(posição) === null || tabuleiro.getCelula(posição)?.getCor() !== this.getCor()) {
+      let possibleMoves = this.getPossibleMoves()
+
+      possibleMoves.add(posição)
+
+      let novaPosição = new Posição(posição.getX() - 1, posição.getY())
+
+      this.setPossibleMoves(possibleMoves)
+      this.calculateUp(tabuleiro, novaPosição)
+    }
+
+  }
+  private calculateLeft(tabuleiro: Tabuleiro, posição: Posição): void {
+    if (!tabuleiro.verifyPos(posição)) {
+      return
+    }
+
+    if (tabuleiro.getCelula(posição) === null || tabuleiro.getCelula(posição)?.getCor() !== this.getCor()) {
+      let possibleMoves = this.getPossibleMoves()
+
+      possibleMoves.add(posição)
+
+      let novaPosição = new Posição(posição.getX(), posição.getY() - 1)
+
+      this.setPossibleMoves(possibleMoves)
+      this.calculateUp(tabuleiro, novaPosição)
+    }
+  }
+  private calculateRight(tabuleiro: Tabuleiro, posição: Posição): void {
+    if (!tabuleiro.verifyPos(posição)) {
+      return
+    }
+
+    if (tabuleiro.getCelula(posição) === null || tabuleiro.getCelula(posição)?.getCor() !== this.getCor()) {
+      let possibleMoves = this.getPossibleMoves()
+
+      possibleMoves.add(posição)
+
+      let novaPosição = new Posição(posição.getX(), posição.getY() + 1)
+      this.setPossibleMoves(possibleMoves)
+      this.calculateUp(tabuleiro, novaPosição)
+    }
+  }
+  private calculateDown(tabuleiro: Tabuleiro, posição: Posição): void {
+    if (!tabuleiro.verifyPos(posição)) {
+      return
+    }
+
+    if (tabuleiro.getCelula(posição) === null || tabuleiro.getCelula(posição)?.getCor() !== this.getCor()) {
+      let possibleMoves = this.getPossibleMoves()
+
+      possibleMoves.add(posição)
+
+      let novaPosição = new Posição(posição.getX() + 1, posição.getY())
+      this.setPossibleMoves(possibleMoves)
+      this.calculateUp(tabuleiro, novaPosição)
+    }
+
+  }
+  calculatePossibleMoves(tabuleiro: Tabuleiro) {
+    this.setPossibleMoves(new Set())
+
+    let novaPosiçãoUp = new Posição(this.getPosição().getX() - 1, this.getPosição().getY())
+    let novaPosiçãoLeft = new Posição(this.getPosição().getX(), this.getPosição().getY() - 1)
+    let novaPosiçãoRight = new Posição(this.getPosição().getX(), this.getPosição().getY() + 1)
+    let novaPosiçãoDown = new Posição(this.getPosição().getX() + 1, this.getPosição().getY())
+
+    this.calculateUp(tabuleiro, novaPosiçãoUp)
+    this.calculateLeft(tabuleiro, novaPosiçãoLeft)
+    this.calculateRight(tabuleiro, novaPosiçãoRight)
+    this.calculateDown(tabuleiro, novaPosiçãoDown)
+  }
+
+  private verifyEquality(conjunto: Set<Posição>, posição: Posição): boolean {
+    for (const elemento of conjunto) {
+      if (posição.equals(elemento)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  mover(tabuleiro: Tabuleiro, posiçãoNova: Posição): boolean {
+    if (!tabuleiro.verifyPos(posiçãoNova)) {
+      error("Fora do tabuleiro")
+      return false;
+    }
+
+    this.calculatePossibleMoves(tabuleiro)
+
+    if (this.verifyEquality(this.getPossibleMoves(), posiçãoNova)) {
+      tabuleiro.setCelula(null, this.getPosição());
+
+      this.setPosição(posiçãoNova);
+      tabuleiro.setCelula(this, posiçãoNova);
+      return true;
+    }
+    console.error("Erro: Posição inválida!");
+
+    return false;
   }
 }
 
