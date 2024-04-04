@@ -1,22 +1,27 @@
 import { Posição } from "@/libs/chess/tipos";
 import Tabuleiro from "@/libs/chess/tabuleiro";
 import CasaDaPeça from "@/components/chess/casa"
+
 import Torre from "@/libs/chess/peças/torre";
 import Peão from "@/libs/chess/peças/peão";
+import Bispo from "@/libs/chess/peças/bispo";
+
 export default function TabuleiroComponent() {
   const tamanho: Posição = { x: 5, y: 5 };
   const tabuleiro = new Tabuleiro(tamanho)
   const divs = [];
 
   let torrezinha = new Torre("preto", { x: 2, y: 2 }, tabuleiro)
-  tabuleiro.setCelula(torrezinha, torrezinha.getPosição())
 
   let peaozin = new Peão("branco", { x: 3, y: 3 }, tabuleiro)
-  tabuleiro.setCelula(peaozin, peaozin.getPosição())
 
   torrezinha.mover(tabuleiro, { x: 2, y: 3 })
 
-  torrezinha.mover(tabuleiro, peaozin.getPosição())
+  let bispin = new Bispo("branco", { x: 0, y: 1 }, tabuleiro)
+
+  bispin.mover(tabuleiro, torrezinha.getPosição())
+
+  console.log(tabuleiro)
 
   for (let i = 0; i < tamanho.x; i++) {
     for (let j = 0; j < tamanho.y; j++) {

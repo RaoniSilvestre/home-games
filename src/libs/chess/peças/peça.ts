@@ -11,6 +11,7 @@ export default abstract class PeçaDeXadrez {
     this.cor = cor;
     this.posição = posição;
     this.possibleMoves = new Set();
+    tabuleiro.setCelula(this, posição)
     this.calculatePossibleMoves(tabuleiro)
   }
 
