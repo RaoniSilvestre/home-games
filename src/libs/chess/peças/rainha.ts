@@ -1,10 +1,9 @@
 import Tabuleiro from "../tabuleiro";
 import { Posição } from "../tipos";
-import Bispo from "./bispo";
 import PeçaDeXadrez from "./peça";
-import Torre from "./torre";
 
 export default class Rainha extends PeçaDeXadrez {
+
   private calculateUp(tabuleiro: Tabuleiro, posição: Posição): void {
     if (!tabuleiro.verifyPos(posição)) return
 
@@ -109,14 +108,14 @@ export default class Rainha extends PeçaDeXadrez {
     this.calculateUp(tabuleiro, { x: x - 1, y: y })
     this.calculateDown(tabuleiro, { x: x + 1, y: y })
     this.calculateLeft(tabuleiro, { x: x, y: y - 1 })
+    this.calculateDown(tabuleiro, { x: x + 1, y: y })
+    this.calculateLeft(tabuleiro, { x: x, y: y - 1 })
     this.calculateRight(tabuleiro, { x: x, y: y + 1 })
     this.calculateUpLeft(tabuleiro, { x: x - 1, y: y - 1 })
     this.calculateUpRight(tabuleiro, { x: x - 1, y: y + 1 })
     this.calculateDownLeft(tabuleiro, { x: x + 1, y: y - 1 })
     this.calculateDownRight(tabuleiro, { x: x + 1, y: y + 1 })
-
   }
-
   public mover(tabuleiro: Tabuleiro, posiçãoNova: Posição): boolean {
     if (!tabuleiro.verifyPos(posiçãoNova)) {
       console.error("Fora do tabuleiro")

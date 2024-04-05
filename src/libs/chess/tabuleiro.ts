@@ -25,9 +25,8 @@ export default class Tabuleiro {
     return this.maxPos;
   }
 
-  verifyPos(pos: Posição): boolean {
+  public verifyPos(pos: Posição): boolean {
     const maxPos = this.getMaxPos();
-
     if (pos.x >= maxPos.x || pos.y >= maxPos.y || pos.y < 0 || pos.x < 0) {
       return false;
     }

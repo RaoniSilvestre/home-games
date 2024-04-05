@@ -10,6 +10,7 @@ export default class Cavalo extends PeçaDeXadrez {
     let { x, y } = this.getPosição();
 
     const addMoveIfValid = (x: number, y: number) => {
+      if (!tabuleiro.verifyPos({ x: x, y: y })) return
       const conteudo = tabuleiro.getCelula({ x, y })
       if (conteudo === null || conteudo.getCor() !== this.getCor()) {
         newPossibleMoves.add({ x, y })

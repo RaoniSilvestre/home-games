@@ -45,6 +45,7 @@ export default abstract class PeçaDeXadrez {
   public abstract mover(tabuleiro: Tabuleiro, posição: Posição): void;
 
 
+
   protected verifyEquality(conjunto: Set<Posição>, posição: Posição): boolean {
     for (const element of conjunto) {
       if (element.x === posição.x && element.y === posição.y) {

@@ -5,6 +5,9 @@ import CasaDaPeça from "@/components/chess/casa"
 import Torre from "@/libs/chess/peças/torre";
 import Peão from "@/libs/chess/peças/peão";
 import Bispo from "@/libs/chess/peças/bispo";
+import Rei from "@/libs/chess/peças/rei";
+import Rainha from "@/libs/chess/peças/rainha";
+import Cavalo from "@/libs/chess/peças/cavalo";
 
 export default function TabuleiroComponent() {
   const tamanho: Posição = { x: 8, y: 8 };
@@ -12,18 +15,13 @@ export default function TabuleiroComponent() {
   const divs = [];
 
   inserirPeões(tabuleiro)
-  let torrezinha = new Torre("preto", { x: 2, y: 2 }, tabuleiro)
+  let cavalin = new Cavalo("preto", { x: 0, y: 2 }, tabuleiro)
 
-  let peaozin = new Peão("branco", { x: 3, y: 3 }, tabuleiro)
-
-  torrezinha.mover(tabuleiro, { x: 2, y: 3 })
-
-  let bispin = new Bispo("branco", { x: 0, y: 1 }, tabuleiro)
-
-  bispin.mover(tabuleiro, torrezinha.getPosição())
+  let torrezinha = new Torre("branco", { x: 4, y: 3 }, tabuleiro)
 
 
-  bispin.mover(tabuleiro, { x: 1, y: 2 })
+
+
   for (let i = 0; i < tamanho.x; i++) {
     for (let j = 0; j < tamanho.y; j++) {
       divs.push(<CasaDaPeça key={`${i}-${j}`} peça={tabuleiro.getCelula({ x: i, y: j })} cor={i + j} />);
@@ -53,4 +51,4 @@ function inserirPeões(tabuleiro: Tabuleiro) {
   }
 }
 
-
+function startGame(tabuleiro: Tabuleiro) { }

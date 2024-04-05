@@ -1,7 +1,6 @@
 import PeçaDeXadrez from "./peça"
 import { Posição } from "../tipos"
 import Tabuleiro from "../tabuleiro"
-
 export default class Torre extends PeçaDeXadrez {
 
   private calculateUp(tabuleiro: Tabuleiro, posição: Posição): void {
