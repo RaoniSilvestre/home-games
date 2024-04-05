@@ -81,7 +81,7 @@ export default class Peão extends PeçaDeXadrez {
 
     this.calculatePossibleMoves(tabuleiro);
 
-    if (this.getPossibleMoves().has(posiçãoNova)) {
+    if (this.verifyEquality(this.getPossibleMoves(), posiçãoNova)) {
       tabuleiro.setCelula(null, this.getPosição());
 
       this.setPosição(posiçãoNova);

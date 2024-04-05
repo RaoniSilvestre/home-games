@@ -1,3 +1,4 @@
+import { error } from "console";
 import { MPeça, Posição } from "./tipos";
 
 
@@ -31,6 +32,16 @@ export default class Tabuleiro {
       return false;
     }
     return true;
+  }
+
+  moverPeça(posiçãoInicial: Posição, posiçãoFinal: Posição): boolean {
+    let peça = this.getCelula(posiçãoInicial);
+    if (peça === null) {
+      console.error("Erro: Local inicial nulo")
+      return false
+    }
+    peça.mover(this, posiçãoFinal)
+    return true
   }
 }
 
