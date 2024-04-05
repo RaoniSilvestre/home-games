@@ -16,16 +16,14 @@ export default class Cavalo extends PeçaDeXadrez {
       }
     }
 
-    addMoveIfValid(x - 2, y - 1);
-    addMoveIfValid(x - 2, y + 1);
-    addMoveIfValid(x - 1, y - 2);
-    addMoveIfValid(x - 1, y + 2);
-    addMoveIfValid(x + 1, y - 2);
-    addMoveIfValid(x + 1, y + 2);
-    addMoveIfValid(x + 2, y - 1);
-    addMoveIfValid(x + 2, y + 1);
-
-
+    addMoveIfValid(x - 1, y - 1);
+    addMoveIfValid(x - 1, y + 1);
+    addMoveIfValid(x + 1, y - 1);
+    addMoveIfValid(x + 1, y + 1);
+    addMoveIfValid(x - 1, y);
+    addMoveIfValid(x + 1, y);
+    addMoveIfValid(x, y - 1);
+    addMoveIfValid(x, y + 1);
 
   }
 

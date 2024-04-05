@@ -55,7 +55,6 @@ export default class Peão extends PeçaDeXadrez {
     if (frontLeftCell !== null && frontLeftCell?.getCor() === "branco") {
       newPossibleMoves.add(frontLeftCell.getPosição())
     }
-    console.log(frontRightCell)
 
     if (frontRightCell !== null && frontRightCell?.getCor() === "branco") {
       newPossibleMoves.add(frontRightCell.getPosição())

@@ -5,17 +5,12 @@ import Tabuleiro from "../tabuleiro"
 export default class Torre extends PeçaDeXadrez {
 
   private calculateUp(tabuleiro: Tabuleiro, posição: Posição): void {
-    if (!tabuleiro.verifyPos(posição)) {
-      return
-    }
+    if (!tabuleiro.verifyPos(posição)) return
 
     if (tabuleiro.getCelula(posição) === null || tabuleiro.getCelula(posição)?.getCor() !== this.getCor()) {
       let possibleMoves = this.getPossibleMoves()
-
       possibleMoves.add(posição)
-
       let novaPosição: Posição = { x: posição.x - 1, y: posição.y }
-
       this.setPossibleMoves(possibleMoves)
       this.calculateUp(tabuleiro, novaPosição)
     }
@@ -23,17 +18,12 @@ export default class Torre extends PeçaDeXadrez {
   }
 
   private calculateLeft(tabuleiro: Tabuleiro, posição: Posição): void {
-    if (!tabuleiro.verifyPos(posição)) {
-      return
-    }
+    if (!tabuleiro.verifyPos(posição)) return
 
     if (tabuleiro.getCelula(posição) === null || tabuleiro.getCelula(posição)?.getCor() !== this.getCor()) {
       let possibleMoves = this.getPossibleMoves()
-
       possibleMoves.add(posição)
-
       let novaPosição = { x: posição.x, y: posição.y - 1 }
-
       this.setPossibleMoves(possibleMoves)
       this.calculateLeft(tabuleiro, novaPosição)
     }
@@ -41,33 +31,23 @@ export default class Torre extends PeçaDeXadrez {
 
 
   private calculateRight(tabuleiro: Tabuleiro, posição: Posição): void {
-    if (!tabuleiro.verifyPos(posição)) {
-      return
-    }
+    if (!tabuleiro.verifyPos(posição)) return
 
     if (tabuleiro.getCelula(posição) === null || tabuleiro.getCelula(posição)?.getCor() !== this.getCor()) {
       let possibleMoves = this.getPossibleMoves()
-
       possibleMoves.add(posição)
-
       let novaPosição = { x: posição.x, y: posição.y + 1 }
       this.setPossibleMoves(possibleMoves)
       this.calculateRight(tabuleiro, novaPosição)
     }
-
-    return
   }
 
   private calculateDown(tabuleiro: Tabuleiro, posição: Posição): void {
-    if (!tabuleiro.verifyPos(posição)) {
-      return
-    }
+    if (!tabuleiro.verifyPos(posição)) return
 
     if (tabuleiro.getCelula(posição) === null || tabuleiro.getCelula(posição)?.getCor() !== this.getCor()) {
       let possibleMoves = this.getPossibleMoves()
-
       possibleMoves.add(posição)
-
       let novaPosição = { x: posição.x + 1, y: posição.y }
       this.setPossibleMoves(possibleMoves)
       this.calculateDown(tabuleiro, novaPosição)
